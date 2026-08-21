@@ -1,0 +1,26 @@
+{
+  "name": "myaiapp",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run index.ts",
+    "start": "bun run index.ts",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "concurrently": "^10.0.5",
+    "prettier": "^3.9.6",
+    "rollup": "npm:@rollup/wasm-node@^4.62.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "openai": "^7.5.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
