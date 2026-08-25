@@ -20,6 +20,9 @@
   "dependencies": {
     "openai": "^7.5.0"
   },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node@4.62.4"
+  },
   "workspaces": [
     "packages/*"
   ]

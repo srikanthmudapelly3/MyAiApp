@@ -5,6 +5,30 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Server (Bun)",
+            "runtimeExecutable": "bun",
+            "runtimeArgs": ["--inspect-wait"],
+            "program": "${workspaceFolder}/packages/server/index.ts",
+            "cwd": "${workspaceFolder}/packages/server",
+            "envFile": "${workspaceFolder}/packages/server/.env",
+            "console": "integratedTerminal",
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "name": "Attach",
+            "port": 9229,
+            "request": "attach",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",
