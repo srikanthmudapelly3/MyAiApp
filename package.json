@@ -18,7 +18,9 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "openai": "^7.5.0"
+    "openai": "^7.5.0",
+    "react-hook-form": "^7.86.0",
+    "react-markdown": "^10.1.0"
   },
   "overrides": {
     "rollup": "npm:@rollup/wasm-node@4.62.4"

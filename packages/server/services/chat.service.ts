@@ -23,6 +23,8 @@ const client = new OpenAI({
       model: 'gpt-5.4-mini',
       input: prompt,
       store: true,
+      temperature:0.2,
+      max_output_tokens:200,
       // previous_response_id: lastResponseId, // Send the last response ID to the server
        previous_response_id: conversationRepository.getLastResponseId(conversationId), // Use the last response ID for the specific conversation
     });
