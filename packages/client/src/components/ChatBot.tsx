@@ -1,17 +1,11 @@
 import { FaArrowUp } from "react-icons/fa";
 import { useForm } from "react-hook-form";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
-import ReactMarkdown from "react-markdown";
-
+import { ChatMessages, type Message } from "./chat/ChatMessages";
 
 type FormData = {
   prompt: string;
-};
-
-type Message = {
-  content: string;
-  role: "user" | "bot";
 };
 
 type ChatResponse = {
@@ -26,11 +20,6 @@ const ChatBot = () => {
   });
   const [messages, setMessages] = useState<Message[]>([]);
   const [isBotTyping, setIsBotTyping] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, isBotTyping]);
 
   const onSubmit = async ({ prompt }: FormData) => {
     const userMessage: Message = {
@@ -57,6 +46,7 @@ const ChatBot = () => {
       setIsBotTyping(false);
     } catch (error) {
       console.error("Error sending chat message:", error);
+      setIsBotTyping(false);
       setMessages((prev) => [
         ...prev,
         {
@@ -67,42 +57,18 @@ const ChatBot = () => {
     }
   };
 
-  const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(onSubmit)();
     }
   };
 
+
   return (
     <div className="flex h-[calc(100vh-2rem)] flex-col">
-      <div className="mb-4 flex min-h-0 flex-1 flex-col space-y-2 overflow-y-auto">
-        {messages.map((message, index) => (
-          <p
-            key={`${message.role}-${index}`}
-            className={`w-fit rounded-xl p-2 ${
-              message.role === "user" ?  " bg-blue-600 text-white self-end" : "bg-grey-600 text-black self-start"
-            }`}
-          >
-            <strong>{message.role === "user" ? "You" : "Bot"}:</strong> <ReactMarkdown>{message.content}</ReactMarkdown>
-          </p>
-        ))}
-        {isBotTyping && (
-          <div className="flex gap-1 self-start rounded-xl bg-slate-200 px-3 py-3">
-            <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
-            <span
-              className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500"
-              style={{ animationDelay: "200ms" }}
-            />
-            <span
-              className="inline-block h-2 w-2 animate-pulse rounded-full bg-green-500"
-              style={{ animationDelay: "400ms" }}
-            />
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
-
+     
+  <ChatMessages messages={messages} isBotTyping={isBotTyping} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex shrink-0 flex-col items-end gap-2 rounded-3xl border-2 bg-background p-4"
@@ -113,6 +79,7 @@ const ChatBot = () => {
             validate: (data) => data.trim().length > 0,
           })}
           onKeyDown={onKeyDown}
+          autoFocus
           className="w-full border-none outline-none focus:outline-none focus:ring-0 resize-none"
           placeholder="Ask any text..."
           maxLength={1000}
