@@ -1,12 +1,15 @@
-import { FaArrowUp } from "react-icons/fa";
-import { useForm } from "react-hook-form";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { ChatMessages, type Message } from "./chat/ChatMessages";
+import type { ChatFormData } from "./chat/ChatInput";
+import ChatInput from "./chat/ChatInput";
+import notifisounds from "@/assets/sounds/Message-notification/Message-notification.mp3";
+import popSound from "@/assets/sounds/Message-sent-sound-effect/Message-sent-sound-effect.mp3";
 
-type FormData = {
-  prompt: string;
-};
+const notificationsounds = new Audio(notifisounds);
+notificationsounds.volume = 0.2;
+const popSounds= new Audio(popSound);
+popSounds.volume = 0.2;
 
 type ChatResponse = {
   id: string;
@@ -15,21 +18,19 @@ type ChatResponse = {
 
 const ChatBot = () => {
   const conversationId = useRef(crypto.randomUUID());
-  const { register, handleSubmit, reset, formState } = useForm<FormData>({
-    mode: "onChange",
-  });
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [isBotTyping, setIsBotTyping] = useState(false);
 
-  const onSubmit = async ({ prompt }: FormData) => {
+  const onSubmit = async ({ prompt }: ChatFormData) => {
     const userMessage: Message = {
       content: prompt,
-      role: "user",
+      role: "user"
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setIsBotTyping(true);
-    reset();
+    popSounds.play();
 
     try {
       const response = await axios.post<ChatResponse>("/api/chat", {
@@ -44,6 +45,7 @@ const ChatBot = () => {
 
       setMessages((prev) => [...prev, botMessage]);
       setIsBotTyping(false);
+      notificationsounds.play();
     } catch (error) {
       console.error("Error sending chat message:", error);
       setIsBotTyping(false);
@@ -57,38 +59,13 @@ const ChatBot = () => {
     }
   };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(onSubmit)();
-    }
-  };
-
+  <ChatBot />;
 
   return (
     <div className="flex h-[calc(100vh-2rem)] flex-col">
-     
-  <ChatMessages messages={messages} isBotTyping={isBotTyping} />
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex shrink-0 flex-col items-end gap-2 rounded-3xl border-2 bg-background p-4"
-      >
-        <textarea
-          {...register("prompt", {
-            required: true,
-            validate: (data) => data.trim().length > 0,
-          })}
-          onKeyDown={onKeyDown}
-          autoFocus
-          className="w-full border-none outline-none focus:outline-none focus:ring-0 resize-none"
-          placeholder="Ask any text..."
-          maxLength={1000}
-        />
+      <ChatMessages messages={messages} isBotTyping={isBotTyping} />
+    <ChatInput onSubmit={onSubmit} />
 
-        <button disabled={!formState.isValid} className="rounded-full w-9 h-9">
-          <FaArrowUp className="" color="red" />
-        </button>
-      </form>
     </div>
   );
 };
