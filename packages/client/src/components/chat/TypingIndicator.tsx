@@ -1,10 +1,8 @@
-
-
 type DotProps = {
   className?: string;
 };
 
-const Dot = ({ className}: DotProps) => {
+const Dot = ({ className }: DotProps) => {
   return (
     <span
       className={`inline-block h-2 w-2 animate-pulse rounded-full bg-green-500 ${className}`}
@@ -21,4 +19,3 @@ export const TypingIndicator = () => {
     </div>
   );
 };
-
