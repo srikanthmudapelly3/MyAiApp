@@ -12,12 +12,14 @@
     "@types/bun": "latest",
     "concurrently": "^10.0.5",
     "prettier": "^3.9.6",
+    "prisma": "^8.0.0-rc.13",
     "rollup": "npm:@rollup/wasm-node@4.62.4"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/client": "^7.10.0",
     "openai": "^7.5.0",
     "react-hook-form": "^7.86.0",
     "react-markdown": "^10.1.0"
