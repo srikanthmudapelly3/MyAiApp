@@ -59,13 +59,24 @@ const ChatBot = () => {
     }
   };
 
-  <ChatBot />;
-
   return (
-    <div className="flex h-[calc(100vh-2rem)] flex-col">
-      <ChatMessages messages={messages} isBotTyping={isBotTyping} />
-    <ChatInput onSubmit={onSubmit} />
+    <div className="flex h-full flex-col bg-white/70">
+      <header className="flex items-center justify-between border-b border-slate-200/80 bg-slate-50/90 px-5 py-4 sm:px-6">
+        <div>
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-slate-500">
+            AI Assistant
+          </p>
+          <h1 className="mt-1 text-lg font-semibold text-slate-800">Chat</h1>
+        </div>
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25">
+          AI
+        </div>
+      </header>
 
+      <div className="flex min-h-0 flex-1 flex-col p-4 sm:p-5">
+        <ChatMessages messages={messages} isBotTyping={isBotTyping} />
+        <ChatInput onSubmit={onSubmit} />
+      </div>
     </div>
   );
 };

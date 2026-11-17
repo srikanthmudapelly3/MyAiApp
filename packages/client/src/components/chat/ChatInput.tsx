@@ -28,25 +28,34 @@ const ChatInput = ({ onSubmit }: Props) => {
   };
 
   return (
-   <form
-        onSubmit={handleFormSubmit}
-        className="flex shrink-0 flex-col items-end gap-2 rounded-3xl border-2 bg-background p-4"
-      >
-        <textarea
-          {...register("prompt", {
-            required: true,
-            validate: (data) => data.trim().length > 0,
-          })}
-          onKeyDown={onKeyDown}
-          autoFocus
-          className="w-full border-none outline-none focus:outline-none focus:ring-0 resize-none"
-          placeholder="Ask any text..."
-          maxLength={1000}
-        />
+    <form
+      onSubmit={handleFormSubmit}
+      className="mt-2 flex shrink-0 items-end gap-3 rounded-[24px] border border-slate-200 bg-slate-50/80 p-2 shadow-[inset_0_1px_2px_rgba(15,23,42,0.04)]"
+    >
+      <textarea
+        {...register("prompt", {
+          required: true,
+          validate: (data) => data.trim().length > 0,
+        })}
+        onKeyDown={onKeyDown}
+        autoFocus
+        rows={1}
+        className="max-h-32 min-h-[44px] w-full resize-none border-none bg-transparent px-3 py-2 text-sm text-slate-700 outline-none placeholder:text-slate-400 focus:outline-none focus:ring-0"
+        placeholder="Ask any text..."
+        maxLength={1000}
+      />
 
-        <button disabled={!formState.isValid} className="rounded-full w-9 h-9">
-          <FaArrowUp className="" color="red" />
-        </button>
+      <button
+        type="submit"
+        disabled={!formState.isValid}
+        className={`flex h-11 w-11 items-center justify-center rounded-full transition-all duration-200 ${
+          formState.isValid
+            ? "bg-gradient-to-r from-indigo-500 to-violet-500 text-white shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5"
+            : "bg-slate-200 text-slate-400"
+        }`}
+      >
+        <FaArrowUp className="h-4 w-4" />
+      </button>
     </form>
   )
 }
